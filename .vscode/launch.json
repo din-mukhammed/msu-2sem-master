@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "src.py",
+            "type": "python",
+            "request": "launch",
+            "program": "big data/HW_3/src.py",
+            "console": "integratedTerminal",
+            "args": [
+                "big data/HW_3/citilink.json",
+                "big data/HW_3/dns.json"
+            ]
+        }
+    ]
+}

@@ -45,24 +45,42 @@ min_freq_field = "Минимальная частота оперативной �
 max_freq_field = "Максимальная частота оперативной памяти"
 del_key = 'Частота'
 
+del_fields = ['Поддержка режима ECC', 'Свободный множитель', 'Гарантия']
+
 
 def del_and_change(filename):
     data = None
     with open(filename, 'r') as f:
         data = json.load(f)
     for obj in data:
-        field = obj[del_key]
-        del obj[del_key]
-        print(field)
-        freq, freqturbo = 'нет', 'нет'
-        if 'Turbo' in field:
-            freq, freqturbo = list(
-                map(str.strip, field.split('и', maxsplit=1)))
-            freqturbo = ' '.join(freqturbo.split()[:2])
-        else:
-            freq = field
-        obj[min_freq_field] = freq
-        obj[max_freq_field] = freqturbo
+        for del_field in del_fields:
+            if del_field in obj.keys():
+                del obj[del_field]
+    with open('out' + filename, 'w') as file:
+        json.dump(obj=data, fp=file, indent=4, ensure_ascii=False)
+
+
+def common_fields(f1, f2):
+    fields = set()
+    data1, data2 = None, None
+    with open(f1, 'r') as file:
+        data1 = json.load(file)
+    obj1 = data1[0]
+    with open(f2, 'r') as file:
+        data2 = json.load(file)
+    obj2 = data2[0]
+    intersection = set(obj1.keys()) & set(obj2.keys())
+    for val in intersection:
+        print(val)
+
+
+def change_dns_file(f1):
+    with open(filename, 'r') as f:
+        data = json.load(f)
+    for obj in data:
+        for del_field in del_fields:
+            if del_field in obj.keys():
+                del obj[del_field]
     with open('out' + filename, 'w') as file:
         json.dump(obj=data, fp=file, indent=4, ensure_ascii=False)
 
@@ -70,7 +88,10 @@ def del_and_change(filename):
 if __name__ == "__main__":
     citilink = 'citilink.json'
     dns = 'dns.json'
-    del_and_change(citilink)
+    # del_and_change(filename=citilink)
+    # del_and_change(filename=dns)
+    common_fields(citilink, dns)
+    # del_and_change(citilink)
     # change_file(citilink)
     # change_file(dns)
     # print_ids(out_citilink)
